@@ -15,7 +15,9 @@ config/features=PackedStringArray("4.3", "Mobile")
 
 [autoload]
 
+Constants="*res://singletons/constants.gd"
 SignalBus="*res://singletons/signal_bus.gd"
+LevelBuilder="*res://singletons/level_builder.gd"
 
 [display]
 
