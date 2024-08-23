@@ -11,13 +11,19 @@ config_version=5
 [application]
 
 config/name="SokobanClone"
+run/main_scene="res://scenes/level/level.tscn"
 config/features=PackedStringArray("4.3", "Mobile")
 
 [autoload]
 
 Constants="*res://singletons/constants.gd"
 SignalBus="*res://singletons/signal_bus.gd"
+GameManager="*res://singletons/game_manager.gd"
 LevelBuilder="*res://singletons/level_builder.gd"
+
+[debug]
+
+gdscript/warnings/untyped_declaration=1
 
 [display]
 
