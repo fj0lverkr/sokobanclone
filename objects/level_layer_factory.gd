@@ -36,12 +36,18 @@ func _init(tile_data: Dictionary) -> void:
 
 func _get_type_for_layer(lt: String) -> LayerType:
     match lt:
-        "Floor": return LayerType.FLOOR
-        "Walls": return LayerType.WALL
-        "Targets": return LayerType.TARGET
-        "Boxes": return LayerType.BOX
-        "TargetBoxes": return LayerType.TARGET_BOX
-        _: return LayerType.INVALID
+        "Floor":
+            return LayerType.FLOOR
+        "Walls":
+            return LayerType.WALL
+        "Targets":
+            return LayerType.TARGET
+        "Boxes":
+            return LayerType.BOX
+        "TargetBoxes":
+            return LayerType.TARGET_BOX
+        _:
+            return LayerType.INVALID
 
 
 func _add_coord(c: Vector2i, t: LayerType) -> void:
