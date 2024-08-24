@@ -9,6 +9,7 @@ extends Node2D
 @onready var camera: Camera2D = $Camera2D
 
 var _total_moves: int = 0
+var _player_tile: Vector2i
 
 
 func _ready() -> void:
@@ -16,7 +17,22 @@ func _ready() -> void:
 
 
 func _process(_delta: float) -> void:
-	pass
+	var md: Vector2i
+	
+	if Input.is_action_just_pressed("up"):
+		md = Vector2i.UP
+	elif Input.is_action_just_pressed("down"):
+		md = Vector2i.DOWN
+	elif Input.is_action_just_pressed("left"):
+		md = Vector2i.LEFT
+		player.flip_h = true
+	elif Input.is_action_just_pressed("right"):
+		md = Vector2i.RIGHT
+		player.flip_h = false
+	else:
+		md = Vector2i.ZERO
+
+	_move_player(md)
 
 
 func _clear_level() -> void:
@@ -62,12 +78,29 @@ func _add_tile(coords: Vector2i, lt: LevelLayerFactory.LayerType) -> void:
 	layer.set_cell(coords, Constants.TILE_SET_SOURCE_ID, source_tile)
 
 
+func _move_player(d: Vector2i) -> void:
+	var nt: Vector2i = _player_tile + d
+	if tl_wall.get_used_cells().has(nt):
+		return
+	
+	_place_player(nt)
+	_total_moves += 1
+
+
+func _place_player(tile_coord: Vector2i) -> void:
+	var p: Vector2i = Vector2i(
+		tile_coord.x * Constants.TILE_SIZE,
+		tile_coord.y * Constants.TILE_SIZE,
+	)
+
+	player.position = p
+	_player_tile = tile_coord
+
+
 func _place_camera() -> void:
 	var used_rect: Rect2i = tl_floor.get_used_rect()
-	print(used_rect.position)
 	camera.position.x = (used_rect.position.x + float(used_rect.size.x) / 2) * Constants.TILE_SIZE
 	camera.position.y = (used_rect.position.y + float(used_rect.size.y) / 2) * Constants.TILE_SIZE
-	print(camera.position)
 
 
 func _setup() -> void:
@@ -85,4 +118,4 @@ func _setup() -> void:
 
 	_place_camera()
 
-	player.position = player_pos * Constants.TILE_SIZE
+	_place_player(player_pos)
