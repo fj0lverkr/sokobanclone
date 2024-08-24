@@ -1,6 +1,6 @@
 class_name LevelLayout
 
-var _player_start: Vector2i = Vector2i.ZERO
+var _player_start: Vector2i
 var _level_layers: LevelLayerFactory
 
 
@@ -9,7 +9,7 @@ func _init(d: Dictionary) -> void:
     _level_layers = LevelLayerFactory.new(d.tiles)
 
 
-func get_player_start() -> Vector2i:
+func get_player_pos() -> Vector2i:
     return _player_start
 
 

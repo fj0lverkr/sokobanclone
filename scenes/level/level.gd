@@ -62,11 +62,19 @@ func _add_tile(coords: Vector2i, lt: LevelLayerFactory.LayerType) -> void:
 	layer.set_cell(coords, Constants.TILE_SET_SOURCE_ID, source_tile)
 
 
+func _place_camera() -> void:
+	var used_rect: Rect2i = tl_floor.get_used_rect()
+	print(used_rect.position)
+	camera.position.x = (used_rect.position.x + float(used_rect.size.x) / 2) * Constants.TILE_SIZE
+	camera.position.y = (used_rect.position.y + float(used_rect.size.y) / 2) * Constants.TILE_SIZE
+	print(camera.position)
+
+
 func _setup() -> void:
 	var lns: String = GameManager._level_selected
 	var level_data: LevelLayout = LevelBuilder.get_data_for_level(lns)
 	var layers: LevelLayerFactory = level_data.get_level_layers()
-	var player_pos: Vector2i = level_data.get_player_start()
+	var player_pos: Vector2i = level_data.get_player_pos()
 
 	_total_moves = 0
 	_clear_level()
@@ -74,3 +82,7 @@ func _setup() -> void:
 	for lt: LevelLayerFactory.LayerType in layers.get_layers():
 		for tile: Vector2i in layers.get_layers()[lt]:
 			_add_tile(tile, lt)
+
+	_place_camera()
+
+	player.position = player_pos * Constants.TILE_SIZE
