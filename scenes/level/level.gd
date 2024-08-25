@@ -10,6 +10,8 @@ extends Node2D
 
 var _total_moves: int = 0
 var _player_tile: Vector2i
+var _boxes_on_target: int = 0
+var _total_targets: int = 0
 
 
 func _ready() -> void:
@@ -117,12 +119,21 @@ func _try_move_box(bc: Vector2i, d: Vector2i) -> bool:
 
 
 func _move_box(ot: Vector2i, nt: Vector2i) -> void:
-	# this moves the box but does not keep track of scoring when the box hits a target
 	var new_tile_type: LevelLayerFactory.LayerType = LevelLayerFactory.LayerType.BOX
 	tl_box.set_cell(ot)
+
 	if _tile_is_target(nt):
 		new_tile_type = LevelLayerFactory.LayerType.TARGET_BOX
+
 	tl_box.set_cell(nt, Constants.TILE_SET_SOURCE_ID, _get_atlas_coord(new_tile_type))
+
+	if _tile_is_target(ot):
+		_boxes_on_target -= 1
+
+	if _tile_is_target(nt):
+		_boxes_on_target += 1
+
+	print("Boxes on target: %s/%s" % [str(_boxes_on_target), str(_total_targets)])
 
 
 func _place_player(tile_coord: Vector2i) -> void:
@@ -156,3 +167,4 @@ func _setup() -> void:
 
 	_place_camera()
 	_place_player(player_pos)
+	_total_targets = tl_target.get_used_cells().size()
