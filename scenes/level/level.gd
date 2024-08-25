@@ -78,13 +78,51 @@ func _add_tile(coords: Vector2i, lt: LevelLayerFactory.LayerType) -> void:
 	layer.set_cell(coords, Constants.TILE_SET_SOURCE_ID, source_tile)
 
 
+func _tile_is_wall(tc: Vector2i) -> bool:
+	return tl_wall.get_used_cells().has(tc)
+
+
+func _tile_is_box(tc: Vector2i) -> bool:
+	return tl_box.get_used_cells().has(tc)
+
+
+func _tile_is_target(tc: Vector2i) -> bool:
+	return tl_target.get_used_cells().has(tc)
+
+
 func _move_player(d: Vector2i) -> void:
 	var nt: Vector2i = _player_tile + d
-	if tl_wall.get_used_cells().has(nt):
+
+	if _tile_is_wall(nt):
+		return
+
+	if _tile_is_box(nt):
+		if not _try_move_box(nt, d):
+			return
+		_place_player(nt)
+		_total_moves += 1
 		return
 	
 	_place_player(nt)
 	_total_moves += 1
+
+
+func _try_move_box(bc: Vector2i, d: Vector2i) -> bool:
+	var nt: Vector2i = bc + d
+
+	if _tile_is_box(nt) or _tile_is_wall(nt):
+		return false
+	_move_box(bc, nt)
+	return true
+
+
+func _move_box(ot: Vector2i, nt: Vector2i) -> void:
+	# this moves the box but does not keep track of scoring when the box hits a target
+	var new_tile_type: LevelLayerFactory.LayerType = LevelLayerFactory.LayerType.BOX
+	tl_box.set_cell(ot)
+	if _tile_is_target(nt):
+		new_tile_type = LevelLayerFactory.LayerType.TARGET_BOX
+	tl_box.set_cell(nt, Constants.TILE_SET_SOURCE_ID, _get_atlas_coord(new_tile_type))
 
 
 func _place_player(tile_coord: Vector2i) -> void:
@@ -117,5 +155,4 @@ func _setup() -> void:
 			_add_tile(tile, lt)
 
 	_place_camera()
-
 	_place_player(player_pos)
