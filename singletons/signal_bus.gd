@@ -1,3 +1,4 @@
 extends Node
 
-signal on_level_complete(level: int, moves: int)
+signal on_level_selected(level: String)
+signal on_level_complete(level: String, moves: int)

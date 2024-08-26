@@ -8,6 +8,7 @@ extends Node2D
 @onready var player: AnimatedSprite2D = $Player
 @onready var camera: Camera2D = $Camera2D
 
+var _lns: String = "1"
 var _total_moves: int = 0
 var _player_tile: Vector2i
 var _boxes_on_target: int = 0
@@ -20,6 +21,13 @@ func _ready() -> void:
 
 func _process(_delta: float) -> void:
 	var md: Vector2i
+
+	# temporary easy way out of levels
+	if Input.is_action_just_pressed("escape"):
+		GameManager._go_to_main()
+
+	if Input.is_action_just_pressed("reload_level"):
+		SignalBus.on_level_selected.emit(_lns)
 	
 	if Input.is_action_just_pressed("up"):
 		md = Vector2i.UP
@@ -127,13 +135,10 @@ func _move_box(ot: Vector2i, nt: Vector2i) -> void:
 
 	tl_box.set_cell(nt, Constants.TILE_SET_SOURCE_ID, _get_atlas_coord(new_tile_type))
 
-	if _tile_is_target(ot):
-		_boxes_on_target -= 1
+	_check_boxes_on_target()
 
-	if _tile_is_target(nt):
-		_boxes_on_target += 1
-
-	print("Boxes on target: %s/%s" % [str(_boxes_on_target), str(_total_targets)])
+	if _boxes_on_target == _total_targets:
+		SignalBus.on_level_complete.emit(_lns, _total_moves)
 
 
 func _place_player(tile_coord: Vector2i) -> void:
@@ -152,9 +157,22 @@ func _place_camera() -> void:
 	camera.position.y = (used_rect.position.y + float(used_rect.size.y) / 2) * Constants.TILE_SIZE
 
 
+func _check_boxes_on_target() -> void:
+	var on_target: int = 0
+	var boxes: Array[Vector2i] = tl_box.get_used_cells()
+	var targets: Array[Vector2i] = tl_target.get_used_cells()
+
+	for t: Vector2i in targets:
+		if boxes.has(t):
+			on_target += 1
+
+	_boxes_on_target = on_target
+	print("Boxes on target: %s/%s" % [str(_boxes_on_target), str(_total_targets)])
+
+
 func _setup() -> void:
-	var lns: String = GameManager._level_selected
-	var level_data: LevelLayout = LevelBuilder.get_data_for_level(lns)
+	_lns = GameManager._level_selected
+	var level_data: LevelLayout = LevelBuilder.get_data_for_level(_lns)
 	var layers: LevelLayerFactory = level_data.get_level_layers()
 	var player_pos: Vector2i = level_data.get_player_pos()
 
@@ -168,3 +186,4 @@ func _setup() -> void:
 	_place_camera()
 	_place_player(player_pos)
 	_total_targets = tl_target.get_used_cells().size()
+	_check_boxes_on_target()

@@ -15,5 +15,6 @@ func _setup_grid() -> void:
 	var num_levels: int = LevelBuilder.get_num_levels()
 	grid.columns = num_cols
 	for l: int in range(num_levels):
-		var button: Node = LEVEL_BUTTON.instantiate()
+		var button: LevelButton = LEVEL_BUTTON.instantiate()
+		button.set_button_level(str(l + 1))
 		grid.add_child(button)
