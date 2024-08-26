@@ -115,11 +115,11 @@ func _move_player(d: Vector2i) -> void:
 		if not _try_move_box(nt, d):
 			return
 		_place_player(nt)
-		_total_moves += 1
+		_increase_moves()
 		return
 	
 	_place_player(nt)
-	_total_moves += 1
+	_increase_moves()
 
 
 func _try_move_box(bc: Vector2i, d: Vector2i) -> bool:
@@ -187,3 +187,8 @@ func _setup() -> void:
 	_place_player(player_pos)
 	_total_targets = tl_target.get_used_cells().size()
 	_check_boxes_on_target()
+
+
+func _increase_moves() -> void:
+	_total_moves += 1
+	SignalBus.on_moves_update.emit(_total_moves)

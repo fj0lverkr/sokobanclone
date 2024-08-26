@@ -20,7 +20,7 @@ func _go_to_main() -> void:
     get_tree().change_scene_to_packed(MAIN_SCENE)
 
 
-func _get_selected_level() -> String:
+func get_selected_level() -> String:
     return _level_selected
 
 
