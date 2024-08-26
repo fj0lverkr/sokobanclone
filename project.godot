@@ -21,6 +21,7 @@ Constants="*res://singletons/constants.gd"
 SignalBus="*res://singletons/signal_bus.gd"
 GameManager="*res://singletons/game_manager.gd"
 LevelBuilder="*res://singletons/level_builder.gd"
+ScoreManager="*res://singletons/score_manager.gd"
 
 [debug]
 

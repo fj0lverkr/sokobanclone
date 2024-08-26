@@ -24,6 +24,6 @@ func _get_selected_level() -> String:
     return _level_selected
 
 
-func _on_level_complete(_l: String, _m: int) -> void:
-    #do stuff to save the moves for this level and the fact that it is completed
+func _on_level_complete(l: String, m: int) -> void:
+    ScoreManager.save_score_for_level(l, m)
     _go_to_main()

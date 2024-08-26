@@ -20,7 +20,7 @@ func _ready() -> void:
 
 
 func _process(_delta: float) -> void:
-	var md: Vector2i
+	var md: Vector2i = Vector2i.ZERO
 
 	# temporary easy way out of levels
 	if Input.is_action_just_pressed("escape"):
@@ -42,7 +42,12 @@ func _process(_delta: float) -> void:
 	else:
 		md = Vector2i.ZERO
 
-	_move_player(md)
+	if md != Vector2i.ZERO:
+		_move_player(md)
+		_check_boxes_on_target()
+
+		if _boxes_on_target == _total_targets:
+			SignalBus.on_level_complete.emit(_lns, _total_moves)
 
 
 func _clear_level() -> void:
@@ -134,11 +139,6 @@ func _move_box(ot: Vector2i, nt: Vector2i) -> void:
 		new_tile_type = LevelLayerFactory.LayerType.TARGET_BOX
 
 	tl_box.set_cell(nt, Constants.TILE_SET_SOURCE_ID, _get_atlas_coord(new_tile_type))
-
-	_check_boxes_on_target()
-
-	if _boxes_on_target == _total_targets:
-		SignalBus.on_level_complete.emit(_lns, _total_moves)
 
 
 func _place_player(tile_coord: Vector2i) -> void:
