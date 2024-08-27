@@ -31,7 +31,7 @@ func get_score_for_level(l: String) -> int:
 
 
 func save_score_for_level(l: String, s: int) -> void:
-	if not l in _scores or _scores[l] < s:
+	if not l in _scores or _scores[l] > s:
 		_scores[l] = s
 	
 	var data: String = JSON.stringify(_scores)
