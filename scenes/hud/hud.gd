@@ -1,9 +1,9 @@
 class_name Hud
 extends CanvasLayer
 
-@onready var level_label: Label = $MC/VB/HBLevel/LabelLevel
-@onready var moves_label: Label = $MC/VB/HBMoves/LabelMoves
-@onready var best_label: Label = $MC/VB/HBBestMoves/LabelBestMoves
+@onready var level_label: Label = $MC/HB/VB/HBBestMoves/LabelBestMoves
+@onready var moves_label: Label = $MC/HB/VB/HBMoves/LabelMoves
+@onready var best_label: Label = $MC/HB/VB/HBBestMoves/LabelBestMoves
 
 const NULL_MOVES: String = "-"
 
