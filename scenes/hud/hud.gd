@@ -1,7 +1,7 @@
 class_name Hud
 extends CanvasLayer
 
-@onready var level_label: Label = $MC/HB/VB/HBBestMoves/LabelBestMoves
+@onready var level_label: Label = $MC/HB/VB/HBLevel/LabelLevel
 @onready var moves_label: Label = $MC/HB/VB/HBMoves/LabelMoves
 @onready var best_label: Label = $MC/HB/VB/HBBestMoves/LabelBestMoves
 
@@ -13,6 +13,9 @@ var _current_moves: int = -1
 
 func _ready() -> void:
 	SignalBus.on_moves_update.connect(_on_moves_update)
+
+
+func set_level() -> void:
 	_current_level = GameManager.get_selected_level()
 	level_label.text = _current_level
 	_set_best_moves()

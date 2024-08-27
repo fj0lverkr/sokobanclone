@@ -20,6 +20,7 @@ var _game_over: bool = false
 
 func _ready() -> void:
 	_setup()
+	hud.set_level()
 
 
 func _process(_delta: float) -> void:

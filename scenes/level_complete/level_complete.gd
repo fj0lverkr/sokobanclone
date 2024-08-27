@@ -20,7 +20,7 @@ func set_current_moves(m: int) -> void:
 
 func _check_best_moves(m: int) -> void:
 	var hs: int = ScoreManager.get_score_for_level(_lns)
-	if m <= hs:
+	if m >= hs and hs > 0:
 		return
 
 	best_hb.show()
