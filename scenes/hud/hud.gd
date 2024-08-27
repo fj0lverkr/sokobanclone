@@ -1,3 +1,4 @@
+class_name Hud
 extends CanvasLayer
 
 @onready var level_label: Label = $MC/VB/HBLevel/LabelLevel

@@ -7,12 +7,15 @@ extends Node2D
 @onready var tl_box: TileMapLayer = $TileMapLayers/TilesBox
 @onready var player: AnimatedSprite2D = $Player
 @onready var camera: Camera2D = $Camera2D
+@onready var hud: Hud = $HUD
+@onready var level_complete: LevelCompletePanel = $LevelComplete
 
 var _lns: String = "1"
 var _total_moves: int = 0
 var _player_tile: Vector2i
 var _boxes_on_target: int = 0
 var _total_targets: int = 0
+var _game_over: bool = false
 
 
 func _ready() -> void:
@@ -22,12 +25,18 @@ func _ready() -> void:
 func _process(_delta: float) -> void:
 	var md: Vector2i = Vector2i.ZERO
 
-	# temporary easy way out of levels
 	if Input.is_action_just_pressed("escape"):
-		GameManager._go_to_main()
+		GameManager.go_to_main()
 
 	if Input.is_action_just_pressed("reload_level"):
 		SignalBus.on_level_selected.emit(_lns)
+
+	if Input.is_action_just_pressed("next_level") and _game_over:
+		var current_level: int = int(_lns)
+		SignalBus.on_level_selected.emit(str(current_level + 1))
+
+	if _game_over:
+		return
 	
 	if Input.is_action_just_pressed("up"):
 		md = Vector2i.UP
@@ -47,12 +56,20 @@ func _process(_delta: float) -> void:
 		_check_boxes_on_target()
 
 		if _boxes_on_target == _total_targets:
-			SignalBus.on_level_complete.emit(_lns, _total_moves)
+			_complete_level()
 
 
 func _clear_level() -> void:
 	for tl: TileMapLayer in tile_layers.get_children():
 		tl.clear()
+
+
+func _complete_level() -> void:
+	hud.hide()
+	level_complete.set_current_moves(_total_moves)
+	level_complete.show()
+	_game_over = true
+	ScoreManager.save_score_for_level(_lns, _total_moves)
 
 
 func _get_atlas_coord(lt: LevelLayerFactory.LayerType) -> Vector2i:
@@ -167,7 +184,6 @@ func _check_boxes_on_target() -> void:
 			on_target += 1
 
 	_boxes_on_target = on_target
-	print("Boxes on target: %s/%s" % [str(_boxes_on_target), str(_total_targets)])
 
 
 func _setup() -> void:
@@ -177,6 +193,7 @@ func _setup() -> void:
 	var player_pos: Vector2i = level_data.get_player_pos()
 
 	_total_moves = 0
+	_game_over = false
 	_clear_level()
 
 	for lt: LevelLayerFactory.LayerType in layers.get_layers():

@@ -1,10 +1,11 @@
-[gd_scene load_steps=6 format=4 uid="uid://b8afx0lh62f6b"]
+[gd_scene load_steps=7 format=4 uid="uid://b8afx0lh62f6b"]
 
 [ext_resource type="Texture2D" uid="uid://cx16mmakjyvqd" path="res://assets/Purple.png" id="1_h7yu7"]
 [ext_resource type="Script" path="res://scenes/level/level.gd" id="1_hsxsw"]
 [ext_resource type="TileSet" uid="uid://bw0isn73jirko" path="res://assets/tileset.tres" id="2_1j4jp"]
 [ext_resource type="PackedScene" uid="uid://dejuyqxo165n1" path="res://scenes/player/player.tscn" id="3_hc0ab"]
 [ext_resource type="PackedScene" uid="uid://berj6wq4vxmk1" path="res://scenes/hud/hud.tscn" id="5_kax5q"]
+[ext_resource type="PackedScene" uid="uid://d1vts6fuy6g45" path="res://scenes/level_complete/level_complete.tscn" id="6_ca3bn"]
 
 [node name="Level" type="Node2D"]
 script = ExtResource("1_hsxsw")
@@ -48,3 +49,6 @@ position = Vector2(610, 315)
 zoom = Vector2(1.5, 1.5)
 
 [node name="HUD" parent="." instance=ExtResource("5_kax5q")]
+
+[node name="LevelComplete" parent="." instance=ExtResource("6_ca3bn")]
+visible = false

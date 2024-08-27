@@ -1,0 +1,87 @@
+[gd_scene load_steps=7 format=3 uid="uid://d1vts6fuy6g45"]
+
+[ext_resource type="Script" path="res://scenes/level_complete/level_complete.gd" id="1_74qh7"]
+[ext_resource type="Texture2D" uid="uid://b5d7gk6tef62t" path="res://assets/panel_beigeLight.png" id="1_tdb0j"]
+[ext_resource type="LabelSettings" uid="uid://iubd5adyqn7n" path="res://assets/LG_Title_96.tres" id="2_w1pdl"]
+[ext_resource type="LabelSettings" uid="uid://cax5bcpx5u5rv" path="res://assets/LG_Blue_48.tres" id="3_qs14p"]
+[ext_resource type="LabelSettings" uid="uid://bgrh87meg8gx1" path="res://assets/LG_Red_48.tres" id="4_yuq0g"]
+[ext_resource type="LabelSettings" uid="uid://dt4d8t41tnpa1" path="res://assets/GM_white_32.tres" id="5_k6fxp"]
+
+[node name="LevelComplete" type="CanvasLayer"]
+script = ExtResource("1_74qh7")
+
+[node name="MC" type="MarginContainer" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 36
+theme_override_constants/margin_top = 36
+theme_override_constants/margin_right = 36
+theme_override_constants/margin_bottom = 36
+
+[node name="NinePatchRect" type="NinePatchRect" parent="MC"]
+layout_mode = 2
+texture = ExtResource("1_tdb0j")
+patch_margin_left = 24
+patch_margin_top = 24
+patch_margin_right = 24
+patch_margin_bottom = 24
+
+[node name="VB" type="VBoxContainer" parent="MC"]
+layout_mode = 2
+size_flags_vertical = 4
+theme_override_constants/separation = 75
+
+[node name="Label" type="Label" parent="MC/VB"]
+layout_mode = 2
+size_flags_horizontal = 4
+text = "LEVEL COMPLETE"
+label_settings = ExtResource("2_w1pdl")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="HBMoves" type="HBoxContainer" parent="MC/VB"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+
+[node name="Label" type="Label" parent="MC/VB/HBMoves"]
+layout_mode = 2
+text = "Moves: "
+label_settings = ExtResource("3_qs14p")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="LabelMoves" type="Label" parent="MC/VB/HBMoves"]
+layout_mode = 2
+text = "-"
+label_settings = ExtResource("3_qs14p")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="HBBest" type="HBoxContainer" parent="MC/VB"]
+visible = false
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+
+[node name="Label" type="Label" parent="MC/VB/HBBest"]
+layout_mode = 2
+text = "New Highscore!"
+label_settings = ExtResource("4_yuq0g")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="HBInstructions" type="HBoxContainer" parent="MC/VB"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+
+[node name="Label" type="Label" parent="MC/VB/HBInstructions"]
+layout_mode = 2
+text = "Press Esc to quit, R to restart, Enter for next level."
+label_settings = ExtResource("5_k6fxp")
+horizontal_alignment = 1
+vertical_alignment = 1
